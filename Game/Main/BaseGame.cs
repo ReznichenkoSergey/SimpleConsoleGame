@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Text.Json.Serialization;
 using Game.Exceptions;
 using Game.GameObjects;
 using Game.Weapons;
@@ -16,6 +16,8 @@ namespace Game.Main
         public int MapSize1 { get; set; }
         public int MapSize2 { get; set; }
         public Map World { get; set; }
+
+        [JsonIgnore]
         public List<GameObject> GameObjects { get; set; } = new List<GameObject>();
 
         public BaseGame(int mapSize1, int mapSize2)
