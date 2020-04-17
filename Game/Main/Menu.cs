@@ -34,12 +34,9 @@ namespace Game.Main
             UserAction userAction = UserAction.Exit;
             ToConsole("Enter the action number from the list below:\r\n", ConsoleColor.Yellow);
             list
-                .Select(x => x.Key)
+                .Select(x => new { Number = $"{x.Key}: {x.Value}" })
                 .ToList()
-                .ForEach(x =>
-                {
-                    ToConsole($"{x}: {list[x]}");
-                });
+                .ForEach(x => { ToConsole(x.Number); });
 
             ToConsole("\r\nTap <Enter> to confirm your choice.\r\n", ConsoleColor.Yellow);
             
