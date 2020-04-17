@@ -22,7 +22,7 @@ namespace Game
                         Console.Write("Enter player name: ");
                         string name = Console.ReadLine();
                         game = new BaseGame(16, 14);
-                        game.Start();
+                        game.Start(false);
                         break;
                     case UserAction.Restore:
                         if (!string.IsNullOrEmpty(fileRestore))
@@ -31,7 +31,10 @@ namespace Game
                             try
                             {
                                 BaseGameSaver.RestoreFromFile(ref game, fileRestore);
-                                game.Start();
+                                if(game != null)
+                                    game.Start(true);
+                                else
+                                    Console.WriteLine("Can't restore the saved game! Try another file.");
                             }
                             catch (Exception ex)
                             {

@@ -32,7 +32,6 @@ namespace Game
         [JsonIgnore]
         public Map World { get; set; }
 
-        [JsonIgnore]
         public IWeapon Weapon { get; set; }
 
         public GamePerson(string name, bool plFriend)

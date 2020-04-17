@@ -15,9 +15,9 @@ namespace Game.Main
         public int Turn { get; set; }
         public int MapSize1 { get; set; }
         public int MapSize2 { get; set; }
-        public Map World { get; set; }
 
         [JsonIgnore]
+        public Map World { get; set; }
         public List<GameObject> GameObjects { get; set; } = new List<GameObject>();
 
         public BaseGame(int mapSize1, int mapSize2)
@@ -33,30 +33,40 @@ namespace Game.Main
             return new Character(name, team);
         }
 
-        public Map InitWorld()
+        public Map InitWorld(bool restored)
         {
-            Random randWeapon = new Random();
-            GameObjects.AddRange(Enumerable.Range(10, 7).Select(x => new Bot($"Friend {x}", true)));
-            GameObjects.AddRange(Enumerable.Range(2, 8).Select(x => new Bot($"Enemy {x}", false)));
-            GameObjects.AddRange(Enumerable.Range(0, 15).Select(x => new Heart()));
-            GameObjects.AddRange(Enumerable.Range(0, 9).Select(x => randWeapon.Next(0, 2) == 0
-                        ? new Knife() as GameObject
-                        : new Sword() as GameObject));
             Map world = new Map(MapSize1, MapSize2, Season.None);
-
             world.GenerateMap();
-            world.InitGameObject(Character1, 1, 1);
-            world.InitGameObject(Character2, MapSize1 - 2, MapSize2 - 2);
+            if (!restored)
+            {
+                Random randWeapon = new Random();
+                GameObjects.AddRange(Enumerable.Range(10, 7).Select(x => new Bot($"Friend {x}", true)));
+                GameObjects.AddRange(Enumerable.Range(2, 8).Select(x => new Bot($"Enemy {x}", false)));
+                GameObjects.AddRange(Enumerable.Range(0, 15).Select(x => new Heart()));
+                GameObjects.AddRange(Enumerable.Range(0, 9).Select(x => randWeapon.Next(0, 2) == 0
+                            ? new Knife() as GameObject
+                            : new Sword() as GameObject));
+                world.InitGameObject(Character1, 1, 1);
+                world.InitGameObject(Character2, MapSize1 - 2, MapSize2 - 2);
+            }
             world.SetGameObjects(GameObjects.ToArray());
             return world;
         }
 
-        public void Start()
+        public void Start(bool restored)
         {
             int v = 0;
-            Character1 = InitPlayer(0, true);
-            Character2 = InitPlayer(1, false);
-            World = InitWorld();
+            if (!restored)
+            {
+                Character1 = InitPlayer(0, true);
+                Character2 = InitPlayer(1, false);
+                World = InitWorld(false);
+            }
+            else
+            {
+                World = InitWorld(true);
+                World.Refresh();
+            }
             while (Character1.Alive && !World.HasWinner())
             {
                 try
@@ -75,8 +85,6 @@ namespace Game.Main
                     {
                         item.Move("");
                     }
-
-                    //BaseGameSaver.SaveToFile(this, "Data_save.json");
 
                     Menu menu = new Menu();
                     if (menu.ShowSaveMenu(this))

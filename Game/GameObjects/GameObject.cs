@@ -2,7 +2,8 @@
 
 namespace Game.GameObjects
 {
-    public abstract class GameObject
+    //public abstract class GameObject
+    public class GameObject
     {
         public string Name { get; set; }
         public virtual void Interaction(GameObject obj)

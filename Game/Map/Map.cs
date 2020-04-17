@@ -21,7 +21,7 @@ namespace Game
         public int WorldWidth { get; }
 
         [JsonIgnore]
-        public Cell[,] Cells { get; }
+        public Cell[,] Cells { get; set; }
         public Season Season { get; }
 
         public Map(int height, int width, Season season)
