@@ -73,7 +73,14 @@ namespace Game.Main
                     {
                         item.Move("");
                     }
-                    Console.ReadKey();
+
+                    //BaseGameSaver.SaveToFile(this, "Data_save.json");
+
+                    Menu menu = new Menu();
+                    if (menu.ShowSaveMenu(this))
+                        World.Refresh();
+
+                    //Console.ReadKey();
                     if (Turn == 2)
                     {
                         var a = 5 / v;
@@ -98,6 +105,5 @@ namespace Game.Main
             World.Show(Character1, Character2, Turn);
             Console.WriteLine($"Congrats {World.GetWinner().Name}!");
         }
-
     }
 }

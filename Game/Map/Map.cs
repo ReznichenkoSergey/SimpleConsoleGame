@@ -2,6 +2,7 @@
 
 using Game.GameObjects;
 using Game.Weapons;
+using Newtonsoft.Json;
 
 namespace Game
 {
@@ -18,6 +19,8 @@ namespace Game
     {
         public int WorldHeight { get; }
         public int WorldWidth { get; }
+
+        [JsonIgnore]
         public Cell[,] Cells { get; }
         public Season Season { get; }
 
