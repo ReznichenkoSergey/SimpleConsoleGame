@@ -36,7 +36,6 @@ namespace Game.Main
         public Map InitWorld(bool restored)
         {
             Map world = new Map(MapSize1, MapSize2, Season.None);
-            world.GenerateMap();
             if (!restored)
             {
                 Random randWeapon = new Random();
@@ -46,10 +45,11 @@ namespace Game.Main
                 GameObjects.AddRange(Enumerable.Range(0, 9).Select(x => randWeapon.Next(0, 2) == 0
                             ? new Knife() as GameObject
                             : new Sword() as GameObject));
+                world.GenerateMap();
                 world.InitGameObject(Character1, 1, 1);
                 world.InitGameObject(Character2, MapSize1 - 2, MapSize2 - 2);
+                world.SetGameObjects(GameObjects.ToArray());
             }
-            world.SetGameObjects(GameObjects.ToArray());
             return world;
         }
 
@@ -64,8 +64,8 @@ namespace Game.Main
             }
             else
             {
-                World = InitWorld(true);
-                World.Refresh();
+                //Draw objects
+                World.RefreshObject();
             }
             while (Character1.Alive && !World.HasWinner())
             {

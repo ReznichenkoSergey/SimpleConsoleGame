@@ -18,8 +18,7 @@ namespace Game.Main
     public class Menu
     {
         Dictionary<int, string> list;
-        private const string prefix = "_save";
-
+        
         public Menu()
         {
             this.list = new Dictionary<int, string>();
@@ -57,7 +56,7 @@ namespace Game.Main
                         
                         List<FileInfo> vs = BaseGameSaver.LoadFiles(5);
                         int padding = vs.Max(x => x.Name.Length);
-                        vs.ForEach(x => { Console.WriteLine($"{vs.IndexOf(x) + 1}:  {Path.GetFileNameWithoutExtension(x.Name).PadRight(padding)}{x.CreationTime}"); });
+                        vs.ForEach(x => { Console.WriteLine($"{vs.IndexOf(x) + 1}:  {Path.GetFileNameWithoutExtension(x.Name).Replace(BaseGameSaver.postfixSave,string.Empty).PadRight(padding)}{x.CreationTime}"); });
 
                         ToConsole("\r\nInput a number of the file and press <Enter>.", ConsoleColor.Yellow);
                         
@@ -94,7 +93,7 @@ namespace Game.Main
                     ToConsole("Enter the file name to save your progress and press 'Enter'.", ConsoleColor.Yellow);
                     name = Console.ReadLine().Trim();
                     if(!string.IsNullOrEmpty(name))
-                        return BaseGameSaver.SaveToFile(baseGame, $"{name}{prefix}.json");
+                        return BaseGameSaver.SaveToFile(baseGame, $"{name}.json");
                 }
             }
             return false;

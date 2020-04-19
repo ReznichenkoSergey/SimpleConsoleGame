@@ -137,6 +137,35 @@ namespace Game
             Console.WriteLine($"Turn: {turn}");
         }
 
+        public void RefreshObject()
+        {
+            for (int i = 0; i < WorldHeight; i++)
+            {
+                for (int k = 0; k < WorldWidth; k++)
+                {
+                    Extensions.ToConsoleWrite("|", ConsoleColor.DarkGreen, Season);
+                    if (Cells[i, k].GameObject != null)
+                    {
+                        if (Cells[i, k].GameObject is Character character)
+                            Extensions.ToConsoleWrite($"☺{(character.Weapon == null ? "_" : "\u2694")}",
+                                character.PlayerFriend ? ConsoleColor.Yellow : ConsoleColor.Red, Season);
+                        else if (Cells[i, k].GameObject is Bot enemy)
+                            Extensions.ToConsoleWrite($"☻{(enemy.Weapon == null ? "_" : "\u2694")}",
+                                enemy.PlayerFriend ? ConsoleColor.Yellow : ConsoleColor.Red, Season);
+                        else if (Cells[i, k].GameObject is Heart)
+                            Extensions.ToConsoleWrite("♥", ConsoleColor.Green, Season);
+                        else if (Cells[i, k].GameObject is Sword)
+                            Extensions.ToConsoleWrite("_\u2694", ConsoleColor.Cyan, Season);
+                        else if (Cells[i, k].GameObject is Knife)
+                            Extensions.ToConsoleWrite("_\u2694", ConsoleColor.Magenta, Season);
+                    }
+                    else
+                        Extensions.ToConsoleWrite("__", ConsoleColor.DarkGreen, Season);
+                }
+                Extensions.ToConsole("|", ConsoleColor.DarkGreen, Season);
+            }
+        }
+
         public void Refresh()
         {
             for (int i = 0; i < WorldHeight; i++)
