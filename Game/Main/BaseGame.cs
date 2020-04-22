@@ -33,23 +33,20 @@ namespace Game.Main
             return new Character(name, team);
         }
 
-        public Map InitWorld(bool restored)
+        public Map InitWorld()
         {
             Map world = new Map(MapSize1, MapSize2, Season.None);
-            if (!restored)
-            {
-                Random randWeapon = new Random();
-                GameObjects.AddRange(Enumerable.Range(10, 7).Select(x => new Bot($"Friend {x}", true)));
-                GameObjects.AddRange(Enumerable.Range(2, 8).Select(x => new Bot($"Enemy {x}", false)));
-                GameObjects.AddRange(Enumerable.Range(0, 15).Select(x => new Heart()));
-                GameObjects.AddRange(Enumerable.Range(0, 9).Select(x => randWeapon.Next(0, 2) == 0
-                            ? new Knife() as GameObject
-                            : new Sword() as GameObject));
-                world.GenerateMap();
-                world.InitGameObject(Character1, 1, 1);
-                world.InitGameObject(Character2, MapSize1 - 2, MapSize2 - 2);
-                world.SetGameObjects(GameObjects.ToArray());
-            }
+            Random randWeapon = new Random();
+            GameObjects.AddRange(Enumerable.Range(10, 7).Select(x => new Bot($"Friend {x}", true)));
+            GameObjects.AddRange(Enumerable.Range(2, 8).Select(x => new Bot($"Enemy {x}", false)));
+            GameObjects.AddRange(Enumerable.Range(0, 15).Select(x => new Heart()));
+            GameObjects.AddRange(Enumerable.Range(0, 9).Select(x => randWeapon.Next(0, 2) == 0
+                        ? new Knife() as GameObject
+                        : new Sword() as GameObject));
+            world.GenerateMap();
+            world.InitGameObject(Character1, 1, 1);
+            world.InitGameObject(Character2, MapSize1 - 2, MapSize2 - 2);
+            world.SetGameObjects(GameObjects.ToArray());
             return world;
         }
 
@@ -60,7 +57,7 @@ namespace Game.Main
             {
                 Character1 = InitPlayer(0, true);
                 Character2 = InitPlayer(1, false);
-                World = InitWorld(false);
+                World = InitWorld();
             }
             else
             {
@@ -86,6 +83,8 @@ namespace Game.Main
                         item.Move("");
                     }
 
+                    BaseGameSaver.AutoSaveToFile(this);
+                    
                     Menu menu = new Menu();
                     if (menu.ShowSaveMenu(this))
                         World.Refresh();
